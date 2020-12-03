@@ -1,5 +1,5 @@
 # HelloUser.sh.md
-aURORA-JC / 2020-12-03
+aURORA_JC / 2020-12-03
 
 ## 实现步骤
 ### 排版构思
@@ -13,6 +13,7 @@ aURORA-JC / 2020-12-03
 
 ### API 选择
 1. **IP归属地查询API**
+
 	`http://ip-api.com/line/${usrIp}?fields=city&lang=zh-CN`
 	|${usrIp}|fields|lang|
 	| --------- | ------ | ----- |
@@ -24,6 +25,7 @@ aURORA-JC / 2020-12-03
 	```
 	
 2. **天气查询API**
+
 	`http://wttr.in/${usrCity}?lang=zh-cn`
 	
 	|${usrIp}|lang|
@@ -44,6 +46,7 @@ aURORA-JC / 2020-12-03
 	```
 	
 3. **一言API**
+
 	`http://yijuzhan.com/api/word.php`
 	
 	返回示例
@@ -55,28 +58,28 @@ aURORA-JC / 2020-12-03
 1. **CPU 信息**
 	CPU 信息存储在 `/proc/cpuinfo`
 	
-	```bash
-	# 获取厂商
-	cpuComp=$(cat /proc/cpuinfo | grep "vendor_id" | uniq | cut -d ':' -f2 | cut -d ' ' -f2)
+```bash
+  # 获取厂商
+  cpuComp=$(cat /proc/cpuinfo | grep "vendor_id" | uniq | cut -d ':' -f2 | cut -d ' ' -f2)
 	
-	# 获取型号
-	cpuName=$(cat /proc/cpuinfo | grep name | cut -d ':' -f2 | uniq)
+  # 获取型号
+  cpuName=$(cat /proc/cpuinfo | grep name | cut -d ':' -f2 | uniq)
 	
-	# 获取核心数
-	cpuCores=$(cat /proc/cpuinfo | grep "cpu cores" | uniq | cut -d ':' -f2 | cut -d ' ' -f2)
-	```
-	
+  # 获取核心数
+  cpuCores=$(cat /proc/cpuinfo | grep "cpu cores" | uniq | cut -d ':' -f2 | cut -d ' ' -f2)
+```
+
 2. **内存信息**
 	
 	使用 `free -mw` 命令
 	
-	```bash
-	memTotal=$(free -mw | head -2 | tail -1 | cut -d ' ' -f12)
-	```
-	
+```bash
+  memTotal=$(free -mw | head -2 | tail -1 | cut -d ' ' -f12)
+```
+
 3. **系统启动时长**
 
-  使用 `uptime -p` 命令
+     使用 `uptime -p` 命令
 
   ```bash
   # 小时数
@@ -88,7 +91,7 @@ aURORA-JC / 2020-12-03
 
 4. **当前用户名**
 
-  使用 `whoami` 命令
+     使用 `whoami` 命令
 
   ```bash
   usrName=$(whoami)
@@ -96,7 +99,7 @@ aURORA-JC / 2020-12-03
 
 5. **当前用户近期登录次数**
 
-  使用 `last` 命令
+     使用 `last` 命令
 
   ```bash
   usrLoginTimes=$(last | grep ${usrName} | cut -d ' ' -f1 | wc -l)
@@ -104,7 +107,7 @@ aURORA-JC / 2020-12-03
 
 6. **当前用户上次登录时长**
 
-  使用 `last` 命令
+     使用 `last` 命令
 
   ```bash
   # 小时数
@@ -116,7 +119,7 @@ aURORA-JC / 2020-12-03
 
 7. **当前用户IP地址**
 
-  使用 `w -h` 命令
+     使用 `w -h` 命令
 
   ```bash
   usrIp=$(w -h | awk '{print $3}' | uniq)
@@ -124,7 +127,7 @@ aURORA-JC / 2020-12-03
 
 8. **当前用户IP归属地**
 
-  调用 `ip-api.com`接口 
+     调用 `ip-api.com`接口 
 
   ```bash
   getCityApi="http://ip-api.com/line/${usrIp}?fields=city&lang=zh-CN"
@@ -141,7 +144,7 @@ aURORA-JC / 2020-12-03
 
 10. **一言**
 
-   定义 `yijuzhan.com`接口 
+       定义 `yijuzhan.com`接口 
 
   ```bash
   getMaximApi="http://yijuzhan.com/api/word.php"
