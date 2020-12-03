@@ -6,8 +6,8 @@ cpuCores=$(cat /proc/cpuinfo | grep "cpu cores" | uniq | cut -d ':' -f2 | cut -d
 memTotal=$(free -mw | head -2 | tail -1 | cut -d ' ' -f12)
 
 # get server power on time
-upHours=$(uptime | cut -d ' ' -f5 | cut -d ':' -f1)
-upMins=$(uptime | cut -d ' ' -f5 | cut -d ':' -f2 | cut -d ',' -f1)
+upHours=$(uptime -p | cut -d ',' -f1 | cut -d ' ' -f2)
+upMins=$(uptime -p | cut -d ',' -f2 | cut -d ' ' -f2)
 
 # whoami get user's name
 usrName=$(whoami)
