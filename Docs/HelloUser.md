@@ -77,37 +77,25 @@ aURORA_JC / 2020-12-03
   memTotal=$(free -mw | head -2 | tail -1 | cut -d ' ' -f12)
 ```
 
-3. **系统启动时长**
+3. **当前用户名**
 
-     使用 `uptime -p` 命令
-
-  ```bash
-  # 小时数
-  upHours=$(uptime -p | cut -d ',' -f1 | cut -d ' ' -f2)
-  
-  # 分钟数
-  upMins=$(uptime -p | cut -d ',' -f2 | cut -d ' ' -f2)
-  ```
-
-4. **当前用户名**
-
-     使用 `whoami` 命令
+   使用 `whoami` 命令
 
   ```bash
   usrName=$(whoami)
   ```
 
-5. **当前用户近期登录次数**
+4. **当前用户近期登录次数**
 
-     使用 `last` 命令
+   使用 `last` 命令
 
   ```bash
   usrLoginTimes=$(last | grep ${usrName} | cut -d ' ' -f1 | wc -l)
   ```
 
-6. **当前用户上次登录时长**
+5. **当前用户上次登录时长**
 
-     使用 `last` 命令
+   使用 `last` 命令
 
   ```bash
   # 小时数
@@ -117,24 +105,24 @@ aURORA_JC / 2020-12-03
   usrLastOnlineTimeM=$(last | grep ${usrName} | head -2 | tail -1 | cut -d '(' -f2 | cut -d ')' -f1 | cut -d ':' -f2)
   ```
 
-7. **当前用户IP地址**
+6. **当前用户IP地址**
 
-     使用 `w -h` 命令
+   使用 `w -h` 命令
 
   ```bash
   usrIp=$(w -h | awk '{print $3}' | uniq)
   ```
 
-8. **当前用户IP归属地**
+7. **当前用户IP归属地**
 
-     调用 `ip-api.com`接口 
+   调用 `ip-api.com`接口 
 
   ```bash
   getCityApi="http://ip-api.com/line/${usrIp}?fields=city&lang=zh-CN"
   usrCity=$(curl -s ${getCityApi})
   ```
 
-9. **当前用户IP归属地天气**
+8. **当前用户IP归属地天气**
 
    定义 `wttr.in`接口 
 
@@ -142,14 +130,15 @@ aURORA_JC / 2020-12-03
   getWeatherApi="http://wttr.in/${usrCity}?lang=zh-cn"
   ```
 
-10. **一言**
+9. **一言**
 
-       定义 `yijuzhan.com`接口 
+   定义 `yijuzhan.com`接口 
 
   ```bash
   getMaximApi="http://yijuzhan.com/api/word.php"
   ```
-11. **格式处理**
+10. **格式处理**
+
   ```bash
   # 天气处理
   wget -q ${getWeatherApi} -O weatheraw
@@ -175,7 +164,7 @@ aURORA_JC / 2020-12-03
   echo -e "\033[36m ╚══╝╚══╝ ╚══════╝╚══════╝ ╚═════╝ ╚═════╝ ╚═╝     ╚═╝╚══════╝╚═╝╚═╝╚═╝\033[0m";
   echo -e "\033[30;47m=======================================================================\033[0m";
   echo -e "\033[34m${cpuComp}'s\033[0m\033[1;34m${cpuName}\033[0m\033[34m x ${cpuCores}\033[0m - \033[1;33m${memTotal} MB 内存\033[0m\033[33m已安装！\033[0m";
-  echo -e "自上次启动运行时间：\033[1;33m${upHours}\033[0m 小时, \033[1;33m${upMins}\033[0m 分";
+  cat /proc/uptime| awk -F. '{run_days=$1 / 86400;run_hour=($1 % 86400)/3600;run_minute=($1 % 3600)/60;run_second=$1 % 60;printf("自上次启动运行时间：\033[1;33m%d\033[0m 天 \033[1;33m%d\033[0m 时 \033[1;33m%d\033[0m 分 \033[1;33m%d\033[0m 秒\n",run_days,run_hour,run_minute,run_second)}'
   echo -e "用户 \033[1;32m${usrName}\033[0m，近一段时间内，您累积登录 \033[1;32m${usrLoginTimes}\033[0m 次";
   echo -e "上次在线时长 \033[1;32m${usrLastOnlineTimeH}\033[0m 小时，\033[1;32m${usrLastOnlineTimeM}\033[0m 分。注意休息，预防职业病！";
   echo -e "\033[30;47m=======================================================================\033[0m";
@@ -198,10 +187,6 @@ cat info
   cpuCores=$(cat /proc/cpuinfo | grep "cpu cores" | uniq | cut -d ':' -f2 | cut -d ' ' -f2)
   memTotal=$(free -mw | head -2 | tail -1 | cut -d ' ' -f12)
 
-  # get server power on time
-  upHours=$(uptime -p | cut -d ',' -f1 | cut -d ' ' -f2)
-  upMins=$(uptime -p | cut -d ',' -f2 | cut -d ' ' -f2)
-
   # whoami get user's name
   usrName=$(whoami)
 
@@ -213,7 +198,7 @@ cat info
   # w -h get user's ip
   usrIp=$(w -h | awk '{print $3}' | uniq)
 
- # ip-api.com get user's local
+  # ip-api.com get user's local
   getCityApi="http://ip-api.com/line/${usrIp}?fields=city&lang=zh-CN"
   usrCity=$(curl -s ${getCityApi})
 
@@ -245,7 +230,7 @@ cat info
   echo -e "\033[36m ╚══╝╚══╝ ╚══════╝╚══════╝ ╚═════╝ ╚═════╝ ╚═╝     ╚═╝╚══════╝╚═╝╚═╝╚═╝\033[0m";
   echo -e "\033[30;47m=======================================================================\033[0m";
   echo -e "\033[34m${cpuComp}'s\033[0m\033[1;34m${cpuName}\033[0m\033[34m x ${cpuCores}\033[0m - \033[1;33m${memTotal} MB 内存\033[0m\033[33m已安装！\033[0m";
-  echo -e "自上次启动运行时间：\033[1;33m${upHours}\033[0m 小时, \033[1;33m${upMins}\033[0m 分";
+  cat /proc/uptime| awk -F. '{run_days=$1 / 86400;run_hour=($1 % 86400)/3600;run_minute=($1 % 3600)/60;run_second=$1 % 60;printf("自上次启动运行时间：\033[1;33m%d\033[0m 天 \033[1;33m%d\033[0m 时 \033[1;33m%d\033[0m 分 \033[1;33m%d\033[0m 秒\n",run_days,run_hour,run_minute,run_second)}'
   echo -e "用户 \033[1;32m${usrName}\033[0m，近一段时间内，您累积登录 \033[1;32m${usrLoginTimes}\033[0m 次";
   echo -e "上次在线时长 \033[1;32m${usrLastOnlineTimeH}\033[0m 小时，\033[1;32m${usrLastOnlineTimeM}\033[0m 分。注意休息，预防职业病！";
   echo -e "\033[30;47m=======================================================================\033[0m";
@@ -256,10 +241,11 @@ cat info
   rm -rf weatheraw
   rm -rf info
 
+
   ```
 
 ## 效果展示
-![DTKUKg.jpg](https://s3.ax1x.com/2020/12/03/DTKUKg.jpg)
+![DTKUKg.jpg](https://i.loli.net/2020/12/04/2tJ4WQjqakOFP6X.jpg)
 
 ## 项目链接
   https://github.com/aURORA-JC/MyShells
